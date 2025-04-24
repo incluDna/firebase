@@ -4,15 +4,24 @@ on:
   pull_request:
     branches: [ main ]
 
-
 jobs:
   test_pull_request:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3  
         with:
-          node-version: 23
-      - run: npm ci
-      - run: npm test
-      - run: npm run build
+          node-version: 18       
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build project
+        run: npm run build
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider 
